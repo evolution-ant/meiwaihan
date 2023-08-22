@@ -1,0 +1,8 @@
+
+> @minimal-kit/simple-next-js@5.0.0 build
+> next build
+
+- info Loaded env from /Users/gaga/Downloads/Minimal_JavaScript_v5.0.0/simple-next-js/.env
+- info Creating an optimized production build...
+- info Compiled successfully
+- info Linting and checking validity of types...
