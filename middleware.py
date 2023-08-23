@@ -20,6 +20,7 @@ def upload_middleware(path, headers, files_dict):
 
     headers = {"Authorization": headers["Authorization"]}
     files = {"files": ("image.png", img_byte_arr, "image/png")}
+
     response = requests.post(url, headers=headers, files=files)
     return Response(response.content, response.status_code, headers)
 
