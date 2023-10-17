@@ -15,8 +15,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Markdown from 'src/components/markdown';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import prettier from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
+// import prettier from 'prettier/standalone';
+// import parserBabel from 'prettier/parser-babel';
 import { useCode } from './hooks';
 
 // ----------------------------------------------------------------------
@@ -65,38 +65,30 @@ export default function CodeManagerCodeItem({
     });
   };
 
-//   const language = item.attributes.language;
-//   let codeContent = item.attributes.content;
-  const {
-    attributes: { language }
-  }
-    = item;
-    let {
-        attributes: { content: codeContent }
-    }
-    = item;
+  const language = item.attributes.language;
+  const codeContent = item.attributes.content;
 
-  if (language === 'js' || language === 'jsx') {
-    try {
-      codeContent = prettier.format(codeContent, {
-        parser: 'babel',
-        plugins: [parserBabel],
-        printWidth: 80,
-        tabWidth: 2,
-        useTabs: false,
-        semi: true,
-        singleQuote: true,
-        trailingComma: 'all',
-        bracketSpacing: true,
-        jsxBracketSameLine: false,
-        arrowParens: 'always',
-        rangeStart: 0,
-        rangeEnd: Infinity,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }
+//   if (language === 'js' || language === 'jsx') {
+//     try {
+//       codeContent = prettier.format(codeContent, {
+//         parser: 'babel',
+//         plugins: [parserBabel],
+//         printWidth: 80,
+//         tabWidth: 2,
+//         useTabs: false,
+//         semi: true,
+//         singleQuote: true,
+//         trailingComma: 'all',
+//         bracketSpacing: true,
+//         jsxBracketSameLine: false,
+//         arrowParens: 'always',
+//         rangeStart: 0,
+//         rangeEnd: Infinity,
+//       });
+//     } catch (e) {
+//       console.error(e);
+//     }
+//   }
 
   //   监控 code 的变化
   useEffect(() => {
