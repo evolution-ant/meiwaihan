@@ -204,7 +204,7 @@ export default function useJoke() {
   }, []);
 
   function buildFilters({ content, tags, topics, type, isFavorited }) {
-    const filters = { isMine: { eq: false } };
+    const filters = { };
 
     if (tags && tags.length > 0) {
       filters.tags = { name: { in: tags } };

@@ -92,7 +92,7 @@ export function useNavData() {
     const fetchData = async () => {
       const accessToken = sessionStorage.getItem('accessToken');
       setSession(accessToken);
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API  }/menus/1?nested&populate=*`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API  }/menus/13?nested&populate=*`);
       const responseData = response.data;
       const transformedData = transformData(responseData);
       setData(transformedData);
