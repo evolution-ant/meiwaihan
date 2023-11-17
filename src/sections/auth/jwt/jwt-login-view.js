@@ -51,7 +51,7 @@ export default function JwtLoginView() {
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    defaultValues,
+    // defaultValues,
   });
 
   const {
@@ -129,11 +129,11 @@ export default function JwtLoginView() {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      {renderHead}
+      {/* {renderHead} */}
 
-      <Alert severity="info" sx={{ mb: 3 }}>
+      {/* <Alert severity="info" sx={{ mb: 3 }}>
         Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-      </Alert>
+      </Alert> */}
 
       {renderForm}
     </FormProvider>
