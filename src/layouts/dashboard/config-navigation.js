@@ -22,7 +22,7 @@ const ICONS = {
   blog: icon('ic_blog'),
   joke: icon('ic_chat'),
   code: icon('ic_code'),
-  todo: icon('ic_chat'),
+  idea: icon('ic_chat'),
   dairy:icon('ic_analytics'),
   image: icon('ic_image'),
   chart: icon('ic_chart'),

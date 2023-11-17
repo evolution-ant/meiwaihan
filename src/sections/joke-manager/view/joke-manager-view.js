@@ -225,7 +225,7 @@ export default function JokeManagerView() {
     <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="h4">Todo</Typography>
+          <Typography variant="h4">Idea</Typography>
           <Button
             variant="contained"
             startIcon={<Iconify icon="material-symbols:add" />}

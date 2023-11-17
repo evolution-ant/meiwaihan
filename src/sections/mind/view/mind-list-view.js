@@ -11,6 +11,8 @@ import { RouterLink } from 'src/routes/components';
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Typography from '@mui/material/Typography';
+
 //
 //
 import { useMind } from '../hooks';
@@ -19,24 +21,17 @@ import MindSearch from '../mind-search';
 import MindSort from '../mind-sort';
 
 const filter = {
-    tags: [],
-}
+  tags: [],
+};
 // ----------------------------------------------------------------------
 export default function MindListView() {
   const settings = useSettingsContext();
 
-  const {
-    minds,
-    getMinds,
-    pagination,
-    changeSearch,
-    searchMinds,
-    allMindTags,
-    getAllMindTags,
-  } = useMind();
+  const { minds, getMinds, pagination, changeSearch, searchMinds, allMindTags, getAllMindTags } =
+    useMind();
 
   const [page, setPage] = useState(1);
-  
+
   const [sortBy, setSortBy] = useState('updatedAt:desc');
 
   const handlePageChange = useCallback((value) => {
@@ -80,35 +75,24 @@ export default function MindListView() {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-      <CustomBreadcrumbs
-        heading="List"
-        links={[
-          {
-            name: 'Dashboard',
-            href: paths.dashboard.root,
-          },
-          {
-            name: 'Mind',
-            href: paths.dashboard.mind.root,
-          },
-          {
-            name: 'List',
-          },
-        ]}
-        action={
-          <Button
-            component={RouterLink}
-            href="/dashboard/mind/new"
-            variant="contained"
-            startIcon={<Iconify icon="mingcute:add-line" />}
-          >
-            New Mind
-          </Button>
-        }
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
         sx={{
           mb: { xs: 3, md: 5 },
         }}
-      />
+      >
+        <Typography variant="h4">Mind</Typography>
+        <Button
+          component={RouterLink}
+          href="/dashboard/mind/new"
+          variant="contained"
+          startIcon={<Iconify icon="mingcute:add-line" />}
+        >
+          Create
+        </Button>
+      </Stack>
 
       <Stack
         spacing={3}
@@ -135,12 +119,7 @@ export default function MindListView() {
           />
         </Stack>
       </Stack>
-      <MindListHorizontal
-        minds={minds}
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+      <MindListHorizontal minds={minds} pagination={pagination} onPageChange={handlePageChange} />
     </Container>
   );
 }
-
