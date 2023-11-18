@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 const ROOTS = {
   AUTH: '/auth',
-  DASHBOARD: '/dashboard/file-manager',
+  DASHBOARD: '/dashboard',
 };
 
 // ----------------------------------------------------------------------
@@ -17,7 +17,7 @@ export const paths = {
   },
   // DASHBOARD
   dashboard: {
-    root: ROOTS.DASHBOARD,
+    root: `${ROOTS.DASHBOARD}/file-manager`,
     blog: {
       root: `${ROOTS.DASHBOARD}/blog`,
       details: (id) => `${ROOTS.DASHBOARD}/blog/${id}`,
