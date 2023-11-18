@@ -90,7 +90,7 @@ export function useNavData() {
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const accessToken = sessionStorage.getItem('accessToken');
+      const accessToken = localStorage.getItem('accessToken');
       setSession(accessToken);
       const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API  }/menus/13?nested&populate=*`);
       const responseData = response.data;

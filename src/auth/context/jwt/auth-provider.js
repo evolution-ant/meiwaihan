@@ -58,11 +58,9 @@ export function AuthProvider({ children }) {
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = sessionStorage.getItem(STORAGE_KEY);
-
+      const accessToken = localStorage.getItem(STORAGE_KEY);
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
-
         const response = await axios.get(API_ENDPOINTS.auth.me);
         const user = response.data;
         localStorage.setItem('user',JSON.stringify(user))
@@ -129,7 +127,7 @@ export function AuthProvider({ children }) {
 
     const { accessToken, user } = response.data;
 
-    sessionStorage.setItem(STORAGE_KEY, accessToken);
+    localStorage.setItem(STORAGE_KEY, accessToken);
 
     dispatch({
       type: 'REGISTER',
