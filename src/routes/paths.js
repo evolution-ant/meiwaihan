@@ -17,7 +17,7 @@ export const paths = {
   },
   // DASHBOARD
   dashboard: {
-    root: `${ROOTS.DASHBOARD}/file-manager`,
+    root: `${ROOTS.DASHBOARD}/idea`,
     blog: {
       root: `${ROOTS.DASHBOARD}/blog`,
       details: (id) => `${ROOTS.DASHBOARD}/blog/${id}`,
@@ -31,7 +31,7 @@ export const paths = {
     },
     calendar: `${ROOTS.DASHBOARD}/calendar`,
     two: `${ROOTS.DASHBOARD}/two`,
-    four: `${ROOTS.DASHBOARD}/four`,
+    dairy: `${ROOTS.DASHBOARD}/dairy`,
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
       three: `${ROOTS.DASHBOARD}/group/three`,

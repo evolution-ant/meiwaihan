@@ -1,12 +1,12 @@
 // sections
-import FiveView from 'src/sections/five/view';
+import TimelineView from 'src/sections/dairy/view';
 
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: Five',
+  title: 'Dashboard: Dairy',
 };
 
 export default function Page() {
-  return <FiveView />;
+  return <TimelineView />;
 }

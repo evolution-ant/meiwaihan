@@ -130,7 +130,7 @@ export default function TimelineView() {
   return (
     <Container >
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 4 }}>
-        <Typography variant="h4">Daily</Typography>
+        <Typography variant="h4">Dairy</Typography>
         <Button
           variant="contained"
           startIcon={<Iconify icon="material-symbols:add" />}
