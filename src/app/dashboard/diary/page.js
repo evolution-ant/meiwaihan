@@ -1,10 +1,10 @@
 // sections
-import TimelineView from 'src/sections/dairy/view';
+import TimelineView from 'src/sections/diary/view';
 
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Dashboard: Dairy',
+  title: 'Dashboard: Diary',
 };
 
 export default function Page() {

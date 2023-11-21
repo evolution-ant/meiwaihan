@@ -23,8 +23,8 @@ import Iconify from 'src/components/iconify';
 import { isDateError } from 'src/components/custom-date-range-picker';
 
 //
-import DialyFilters from './dialy-filters';
-import DialyFiltersResult from './dialy-filters-result';
+import DialyFilters from './diary-filters';
+import DialyFiltersResult from './diary-filters-result';
 import NewDiaryDialog from './new-diary-dialog';
 
 import { useDiary } from './hooks';
@@ -130,7 +130,7 @@ export default function TimelineView() {
   return (
     <Container >
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 4 }}>
-        <Typography variant="h4">Dairy</Typography>
+        <Typography variant="h4">Diary</Typography>
         <Button
           variant="contained"
           startIcon={<Iconify icon="material-symbols:add" />}

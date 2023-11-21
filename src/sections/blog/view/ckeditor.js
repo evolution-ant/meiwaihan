@@ -36042,10 +36042,10 @@
                   elementName: 'oembed',
                   providers: [
                     {
-                      name: 'dairymotion',
-                      url: /^dairymotion\.com\/video\/(\w+)/,
+                      name: 'diarymotion',
+                      url: /^diarymotion\.com\/video\/(\w+)/,
                       html: (t) =>
-                        `<div style="position: relative; padding-bottom: 100%; height: 0; "><iframe src="https://www.dairymotion.com/embed/video/${t[1]}" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" frameborder="0" width="480" height="270" allowfullscreen allow="autoplay"></iframe></div>`,
+                        `<div style="position: relative; padding-bottom: 100%; height: 0; "><iframe src="https://www.diarymotion.com/embed/video/${t[1]}" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" frameborder="0" width="480" height="270" allowfullscreen allow="autoplay"></iframe></div>`,
                     },
                     {
                       name: 'spotify',

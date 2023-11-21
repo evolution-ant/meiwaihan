@@ -30,15 +30,7 @@ export const paths = {
         edit: (id) => `${ROOTS.DASHBOARD}/mind/${id}/edit`,
     },
     calendar: `${ROOTS.DASHBOARD}/calendar`,
-    two: `${ROOTS.DASHBOARD}/two`,
-    dairy: `${ROOTS.DASHBOARD}/dairy`,
-    group: {
-      root: `${ROOTS.DASHBOARD}/group`,
-      three: `${ROOTS.DASHBOARD}/group/three`,
-      five: {
-        root: `${ROOTS.DASHBOARD}/group/five`,
-        six: `${ROOTS.DASHBOARD}/group/five/six`,
-      },
-    },
+    word: `${ROOTS.DASHBOARD}/word`,
+    diary: `${ROOTS.DASHBOARD}/diary`,
   },
 };

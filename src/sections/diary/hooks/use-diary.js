@@ -24,7 +24,7 @@ query diaries($filters:DiaryFiltersInput!){
   }
 `;
 
-const CREATE_DIARY_MUTATION = `
+const CREATE_Diary_MUTATION = `
 mutation createDiary($input: DiaryInput!) {
     createDiary(data: $input) {
       data {
@@ -62,7 +62,7 @@ function buildFilters({ title, type, startDate, endDate }) {
 export default function useDiary() {
   const [diaries, setDiaries] = useState([]);
 
-  const [diarysStatus, setDiariesStatus] = useState({
+  const [DiarysStatus, setDiariesStatus] = useState({
     loading: false,
     empty: false,
     error: null,
@@ -111,12 +111,12 @@ export default function useDiary() {
   );
 
   const createDiary = useCallback(
-    async (diary) => {
+    async (Diary) => {
         const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
-            query: CREATE_DIARY_MUTATION,
+            query: CREATE_Diary_MUTATION,
             variables: {
                 input: 
-                     diary,
+                     Diary,
             },
         });
         const createdDiary = response.data.data.createDiary;
@@ -132,7 +132,7 @@ export default function useDiary() {
 
 
   return {
-    diarysStatus,
+    DiarysStatus,
     diaries,
     setDiaries,
     getDiaries,
