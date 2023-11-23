@@ -28,7 +28,7 @@ import WordManagerNewDialog from '../word-manager-new-dialog';
 const defaultFilters = {
   text: '',
   type: 'default',
-  status: 'all',
+  status: '',
 };
 
 // ----------------------------------------------------------------------
@@ -65,7 +65,7 @@ export default function WordManagerView() {
 
   const createOrUpdate = useBoolean();
 
-  const canReset = filters.type!=='default' || filters.status!=='all' || !!filters.text;
+  const canReset = filters.type!=='default' || filters.status!=='' || !!filters.text;
 
   const notFound = (!wordsCount && canReset) || !wordsCount;
 

@@ -40,13 +40,13 @@ export default function WordManagerFiltersResult({
           </Block>
         )}
 
-        {filters.status !== 'all' && (
+        {filters.status !== '' && (
           <Block label="Status:">
             <Chip
               key={filters.status}
               label={filters.status}
               size="small"
-              onDelete={() => onFilters('status', 'all')}
+              onDelete={() => onFilters('status', '')}
             />
           </Block>
         )}

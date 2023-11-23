@@ -6,18 +6,8 @@ import axios from 'src/utils/axios';
 // 定义GraphQL查询
 
 const WORDS_QUERY = `
-query($page: Int!, $pageSize: Int!, $language:String, $type:String, $text:String) {
-    words(pagination: { page: $page, pageSize: $pageSize }, filters: {
-      language:{
-        eq: $language
-      }
-      type:{
-        eq: $type
-      }
-      text:{
-        contains:$text
-      }
-    }) {
+query($page: Int!, $pageSize: Int!, $filters: WordFiltersInput!) {
+    words(pagination: { page: $page, pageSize: $pageSize }, filters: $filters) {
       data {
         id
         attributes {
@@ -28,8 +18,8 @@ query($page: Int!, $pageSize: Int!, $language:String, $type:String, $text:String
           type
         }
       }
-      meta{
-        pagination{
+      meta {
+        pagination {
           page
           pageSize
           pageCount
@@ -50,6 +40,35 @@ mutation ($id:ID!,$status:ENUM_WORD_STATUS){
   }  
 `;
 
+const buildFilters = (filters) => {
+    const { language, status, type, text } = filters;
+    const filtersObj = {};
+    if(language) {
+        filtersObj.language = {
+            eq: language
+        };
+    }
+    if(status&&status!=='all') {
+        filtersObj.status = {
+            eq: status
+        };
+    }
+    if(type) {
+        filtersObj.type = {
+            eq: type
+        };
+    }
+    if(text) {
+        filtersObj.text = {
+            contains: text
+        };
+    }
+    return {
+        page: 1,
+        pageSize: 10,
+        filters: filtersObj
+    };
+};
 
 export default function useWord() {
   const [words, setWords] = useState([]);
@@ -85,15 +104,7 @@ export default function useWord() {
       try {
         const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
           query: WORDS_QUERY,
-          variables: {
-            page: wordPagination.page,
-            pageSize: wordPagination.pageSize,
-            sortParams: [sort],
-            language: filters.language,
-            type: filters.type,
-            status: filters.status,
-            text: filters.text,
-          },
+          variables: buildFilters(filters),
         });
         const fetchedWords = response.data.data.words.data;
         setWords(fetchedWords);
