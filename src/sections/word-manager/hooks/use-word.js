@@ -77,7 +77,7 @@ export default function useWord() {
 
   const [wordPagination, setWordPagination] = useState({
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
   });
 
   const [wordsStatus, setWordsStatus] = useState({
