@@ -32,7 +32,7 @@ export default function WordManagerWordItem({
 
     const setVoice = () => {
       voices = synth.getVoices();
-      for (let i = 0; i < voices.length; i+=1) {
+      for (let i = 0; i < voices.length; i += 1) {
         console.log(`Voice ${i}: ${voices[i].name}, ${voices[i].lang}`);
       }
       const sandyVoice = voices.find((voice) => voice.name === 'Alex');
@@ -64,7 +64,16 @@ export default function WordManagerWordItem({
       }}
     >
       <Stack direction="row" alignItems="start">
-        <IconButton size="small" onClick={() => speakText(item.attributes.text)}>
+        <IconButton
+          size="small"
+          onClick={() => {
+            const content =
+              item.attributes.language === 'en'
+                ? item.attributes.text
+                : item.attributes.translatedText;
+            speakText(content);
+          }}
+        >
           <Iconify icon="fluent-emoji-flat:speaker-medium-volume" />
         </IconButton>
         <Stack>
