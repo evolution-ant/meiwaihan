@@ -32,7 +32,7 @@ export default function WordManagerWordItem({
 
     const setVoice = () => {
       voices = synth.getVoices();
-      for (let i = 0; i < voices.length; i++) {
+      for (let i = 0; i < voices.length; i+=1) {
         console.log(`Voice ${i}: ${voices[i].name}, ${voices[i].lang}`);
       }
       const sandyVoice = voices.find((voice) => voice.name === 'Alex');
