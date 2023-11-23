@@ -6,13 +6,16 @@ import axios from 'src/utils/axios';
 // 定义GraphQL查询
 
 const WORDS_QUERY = `
-query($page: Int!, $pageSize: Int!, $language:String, $type:String) {
+query($page: Int!, $pageSize: Int!, $language:String, $type:String, $text:String) {
     words(pagination: { page: $page, pageSize: $pageSize }, filters: {
       language:{
         eq: $language
       }
       type:{
         eq: $type
+      }
+      text:{
+        contains:$text
       }
     }) {
       data {
@@ -34,7 +37,17 @@ query($page: Int!, $pageSize: Int!, $language:String, $type:String) {
         }
       }
     }
-  }
+  }  
+`;
+
+const UPDATE_WORD_STATUS_MUTATION = `
+mutation ($id:ID!,$status:ENUM_WORD_STATUS){
+    updateWord(id: $id, data: { status: $status }) {
+      data {
+        id
+      }
+    }
+  }  
 `;
 
 
@@ -78,7 +91,8 @@ export default function useWord() {
             sortParams: [sort],
             language: filters.language,
             type: filters.type,
-            status: filters.status
+            status: filters.status,
+            text: filters.text,
           },
         });
         const fetchedWords = response.data.data.words.data;
@@ -107,6 +121,30 @@ export default function useWord() {
     [handleSetWordsStatus, wordPagination.page, wordPagination.pageSize]
   );
 
+  const updateWordStatus = useCallback(
+    async (id, status) => {
+      try {
+        const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
+          query: UPDATE_WORD_STATUS_MUTATION,
+          variables: {
+            id,
+            status,
+          },
+        });
+        const updatedWord = response.data.data.updateWordStatus;
+        // setWords((prevState) => {
+        //   const newState = [...prevState];
+        //   const index = newState.findIndex((word) => word.id === updatedWord.id);
+        //   newState[index] = updatedWord;
+        //   return newState;
+        // });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    []
+  );
+
   return {
     wordPagination,
     setWordPagination,
@@ -117,5 +155,6 @@ export default function useWord() {
     setWords,
     getWords,
     wordsCount,
+    updateWordStatus
   };
 }

@@ -22,6 +22,7 @@ export default function WordManagerGridView({
   onPageChange,
   onRowsPerPageChange,
   onDeleteRow,
+  onDifficultyChange,
   onEditRow,
 }) {
   const containerRef = useRef(null);
@@ -55,6 +56,7 @@ export default function WordManagerGridView({
               onItemChange={onItemChange}
               onDeleteRow={onDeleteRow}
               onEditRow={onEditRow}
+              onDifficultyChange={onDifficultyChange}
             />
           ))}
           </Box>
@@ -93,5 +95,6 @@ WordManagerGridView.propTypes = {
   onPageChange: PropTypes.func,
   onRowsPerPageChange: PropTypes.func,
   onDeleteRow: PropTypes.func,
+  onDifficultyChange: PropTypes.func,
   onEditRow: PropTypes.func,
 };

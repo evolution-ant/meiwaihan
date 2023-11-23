@@ -19,12 +19,6 @@ export default function WordManagerFiltersResult({
   results,
   ...other
 }) {
-  
-  const getLabel = (isFavorited) => {
-    if (isFavorited === null) return 'All';
-    return isFavorited ? 'Yes' : 'No';
-  };
-    
   return (
     <Stack spacing={1.5} {...other}>
       <Box sx={{ typography: 'body2' }}>
@@ -46,15 +40,25 @@ export default function WordManagerFiltersResult({
           </Block>
         )}
 
-        {filters.isFavorited !== null && (
-        <Block label="Favorited:">
+        {filters.status !== 'all' && (
+          <Block label="Status:">
             <Chip
-            key={filters.isFavorited}
-            label={getLabel(filters.isFavorited)}
-            size="small"
-            onDelete={() => onFilters('isFavorited', null)}
+              key={filters.status}
+              label={filters.status}
+              size="small"
+              onDelete={() => onFilters('status', 'all')}
             />
-        </Block>
+          </Block>
+        )}
+        {filters.text !== '' && (
+          <Block label="Text:">
+            <Chip
+              key={filters.text}
+              label={filters.text}
+              size="small"
+              onDelete={() => onFilters('text', '')}
+            />
+          </Block>
         )}
 
         {canReset && (

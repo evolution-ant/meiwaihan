@@ -14,7 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import CustomSelectFav from 'src/components/custom-select/custom-select-fav';
+import CustomSelectStatus from 'src/components/custom-select/custom-select-status';
 
 // ----------------------------------------------------------------------
 
@@ -23,51 +23,48 @@ export default function WordManagerFilters({
   filters,
   onFilters,
   //
-  TypeOptions,
+  typeOptions,
 }) {
-  const TypePopover = usePopover();
-
+  const typePopover = usePopover();
 
   const handleFilterContent = useCallback(
     (event) => {
-      onFilters('title', event.target.value);
+      onFilters('text', event.target.value);
     },
     [onFilters]
   );
 
   const handleFilterType = useCallback(
     (newValue) => {
-      const value = filters.Type === newValue ? '' : newValue;
-      onFilters('Type', value);
-      TypePopover.onClose();
+      const value = filters.type === newValue ? '' : newValue;
+      onFilters('type', value);
+      typePopover.onClose();
     },
-    [filters.Type, onFilters, TypePopover]
+    [filters.type, onFilters, typePopover]
   );
 
   const handleResetType = useCallback(() => {
-    TypePopover.onClose();
-    onFilters('Type', '');
-  }, [onFilters, TypePopover]);
+    typePopover.onClose();
+    onFilters('type', 'default');
+  }, [onFilters, typePopover]);
 
   const renderFilterType = (
     <>
       <Button
         color="inherit"
-        onClick={TypePopover.onOpen}
+        onClick={typePopover.onOpen}
         endIcon={
           <Iconify
-            icon={
-              TypePopover.open ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'
-            }
+            icon={typePopover.open ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'}
             sx={{ ml: -0.5 }}
           />
         }
       >
-        {filters.Type ? (
+        {filters.type ? (
           <>
             <Box
               component="img"
-              src={`/assets/icons/word-Types/word_${filters.Type}.svg`}
+              src={`/assets/icons/word-types/word_${filters.type}.svg`}
               sx={{
                 width: 18,
                 height: 18,
@@ -75,14 +72,14 @@ export default function WordManagerFilters({
                 mr: 0.5,
               }}
             />
-            {filters.Type}
+            {filters.type}
           </>
         ) : (
-          'All Type'
+          'All type'
         )}
       </Button>
 
-      <CustomPopover open={TypePopover.open} onClose={TypePopover.onClose} sx={{ p: 2.5 }}>
+      <CustomPopover open={typePopover.open} onClose={typePopover.onClose} sx={{ p: 2.5 }}>
         <Stack spacing={2.5}>
           <Box
             gap={1}
@@ -92,13 +89,13 @@ export default function WordManagerFilters({
               sm: 'repeat(4, 1fr)',
             }}
           >
-            {TypeOptions.map((Type) => {
-              const selected = filters.Type === Type;
+            {typeOptions.map((type) => {
+              const selected = filters.type === type;
 
               return (
                 <CardActionArea
-                  key={Type}
-                  onClick={() => handleFilterType(Type)}
+                  key={type}
+                  onClick={() => handleFilterType(type)}
                   sx={{
                     p: 1,
                     borderRadius: 1,
@@ -110,17 +107,17 @@ export default function WordManagerFilters({
                   }}
                 >
                   <Stack spacing={1} direction="row" alignItems="center">
-                    {/* <TypeThumbnail Type={Type} /> */}
+                    {/* <TypeThumbnail type={type} /> */}
                     <Box
                       component="img"
-                      src={`/assets/icons/word-Types/word_${Type}.svg`}
+                      src={`/assets/icons/word-types/word_${type}.svg`}
                       sx={{
                         width: 24,
                         height: 24,
                         flexShrink: 0,
                       }}
                     />
-                    <Typography variant={selected ? 'subtitle2' : 'body2'}>{Type}</Typography>
+                    <Typography variant={selected ? 'subtitle2' : 'body2'}>{type}</Typography>
                   </Stack>
                 </CardActionArea>
               );
@@ -131,8 +128,7 @@ export default function WordManagerFilters({
             <Button variant="outlined" color="inherit" onClick={handleResetType}>
               Clear
             </Button>
-
-            <Button variant="contained" onClick={TypePopover.onClose}>
+            <Button variant="contained" onClick={typePopover.onClose}>
               Apply
             </Button>
           </Stack>
@@ -143,7 +139,7 @@ export default function WordManagerFilters({
 
   const renderFilterContent = (
     <TextField
-      value={filters.title}
+      value={filters.text}
       onChange={handleFilterContent}
       placeholder="Search..."
       InputProps={{
@@ -164,10 +160,9 @@ export default function WordManagerFilters({
       {renderFilterContent}
       <Stack spacing={1} direction="row" alignItems="center" justifyContent="flex-end" flexGrow={1}>
         {renderFilterType}
-        <CustomSelectFav
-          title=""
-          select={filters.isFavorited}
-          onSelect={(value) => onFilters('isFavorited', value)}
+        <CustomSelectStatus
+          select={filters.status}
+          onSelect={(value) => onFilters('status', value)}
         />
       </Stack>
     </Stack>
@@ -177,5 +172,5 @@ export default function WordManagerFilters({
 WordManagerFilters.propTypes = {
   filters: PropTypes.object,
   onFilters: PropTypes.func,
-  TypeOptions: PropTypes.array,
+  typeOptions: PropTypes.array,
 };

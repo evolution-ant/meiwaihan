@@ -26,9 +26,9 @@ import WordManagerNewDialog from '../word-manager-new-dialog';
 // ----------------------------------------------------------------------
 
 const defaultFilters = {
-  title: '',
-  Type: '',
-  isFavorited: null,
+  text: '',
+  type: 'default',
+  status: 'all',
 };
 
 // ----------------------------------------------------------------------
@@ -40,6 +40,7 @@ export default function WordManagerView() {
     setWords,
     updateWord,
     createWord,
+    updateWordStatus,
     deleteWord,
     //
     wordPagination,
@@ -51,7 +52,6 @@ export default function WordManagerView() {
   const [filters, setFilters] = useState(defaultFilters);
 
   const [sortBy, setSortBy] = useState('updatedAt:desc');
-
 
   const allTypes = ["default"];
 
@@ -65,7 +65,7 @@ export default function WordManagerView() {
 
   const createOrUpdate = useBoolean();
 
-  const canReset = filters.Type || !!filters.title || filters.isFavorited !== null;
+  const canReset = filters.type!=='default' || filters.status!=='all' || !!filters.text;
 
   const notFound = (!wordsCount && canReset) || !wordsCount;
 
@@ -158,6 +158,14 @@ export default function WordManagerView() {
     [setWords, deleteWord]
   );
 
+const handleDifficultyChange = useCallback(
+    async (id, status) => {
+        await updateWordStatus(id, status);
+        getWords(sortBy, filters);
+    },
+    [getWords, sortBy, filters, updateWordStatus]
+);
+
   const renderFilters = (
     <Stack
       sx={{
@@ -170,7 +178,7 @@ export default function WordManagerView() {
     <WordManagerFilters
         filters={filters}
         onFilters={handleFilters}
-        TypeOptions={allTypes}
+        typeOptions={allTypes}
       />
       <Box>
         <WordSort
@@ -253,6 +261,7 @@ export default function WordManagerView() {
             pagination={wordPagination}
             onPageChange={handelPageChange}
             onRowsPerPageChange={handleRowsPerPageChange}
+            onDifficultyChange={handleDifficultyChange}
             onEditRow={(item) => {
               setEditingItem(item);
               createOrUpdate.onTrue();
