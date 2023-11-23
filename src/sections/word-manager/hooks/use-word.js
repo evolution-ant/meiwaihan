@@ -129,7 +129,7 @@ export default function useWord() {
         handleSetWordsStatus('error', error);
       }
     },
-    [handleSetWordsStatus, wordPagination.page, wordPagination.pageSize]
+    [handleSetWordsStatus]
   );
 
   const updateWordStatus = useCallback(
