@@ -5,36 +5,14 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
 // hooks
 // components
 import Iconify from 'src/components/iconify';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Markdown from 'src/components/markdown';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import prettier from 'prettier/standalone';
-// import parserBabel from 'prettier/parser-babel';
 import { useWord } from './hooks';
 
 // ----------------------------------------------------------------------
-
-const icon = (language) =>
-  language === null || language === undefined || language === '' ? (
-    <Box
-      component="img"
-      src="/assets/icons/word-languages/word_txt.svg"
-      sx={{ width: 24, height: 24 }}
-    />
-  ) : (
-    <Box
-      component="img"
-      src={`/assets/icons/word-languages/word_${language}.svg`}
-      sx={{ width: 24, height: 24 }}
-    />
-  );
 
 export default function WordManagerWordItem({
   word,
@@ -47,25 +25,31 @@ export default function WordManagerWordItem({
   ...other
 }) {
   const [item, setItem] = useState(word);
-  const [isHovered, setIsHovered] = useState(false);
 
-  const { updateWordFavorited } = useWord();
-  const onFavoriteChange = (event) => {
-    setItem((prevData) => {
-      const newData = {
-        ...prevData,
-        attributes: {
-          ...prevData.attributes,
-          isFavorited: event.target.checked,
-        },
-      };
-      updateWordFavorited(newData.id, event.target.checked);
-      return newData;
-    });
+  const speakText = (text) => {
+    const synth = window.speechSynthesis;
+    let voices = [];
+
+    const setVoice = () => {
+      voices = synth.getVoices();
+      for (let i = 0; i < voices.length; i++) {
+        console.log(`Voice ${i}: ${voices[i].name}, ${voices[i].lang}`);
+      }
+      const sandyVoice = voices.find((voice) => voice.name === 'Alex');
+      if (sandyVoice) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = sandyVoice;
+        synth.speak(utterance);
+      } else {
+        console.log('Sandy voice not found');
+      }
+    };
+
+    if (synth.onvoiceschanged !== undefined) {
+      synth.onvoiceschanged = setVoice;
+    }
+    setVoice();
   };
-
-  const language = item.attributes.language;
-  const wordContent = item.attributes.content;
 
   //   监控 word 的变化
   useEffect(() => {
@@ -79,43 +63,15 @@ export default function WordManagerWordItem({
         width: '100%',
       }}
     >
-      <Accordion
-        sx={{
-          backgroundColor: 'transparent !important',
-          boxShadow: 'none !important',
-        }}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Stack direction="row" alignItems="start">
-            <Checkbox
-              color="warning"
-              icon={<Iconify icon="eva:star-outline" />}
-              checkedIcon={<Iconify icon="eva:star-fill" />}
-              checked={item.attributes.isFavorited}
-              onChange={(event) => {
-                event.stopPropagation();
-                onFavoriteChange(event);
-              }}
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-              sx={{
-                marginRight: 1,
-              }}
-            />
-            <Stack>
-              <Typography variant="h4">{item.attributes.text}</Typography>
-            </Stack>
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Markdown children={`\`\`\`\`\`${language ? `${language}\n` : '\n'}${wordContent}`} />
-        </AccordionDetails>
-      </Accordion>
+      <Stack direction="row" alignItems="start">
+        <IconButton size="small" onClick={() => speakText(item.attributes.text)}>
+          <Iconify icon="fluent-emoji-flat:speaker-medium-volume" />
+        </IconButton>
+        <Stack>
+          <Typography variant="h4">{item.attributes.text}</Typography>
+          {item.attributes.translatedText}
+        </Stack>
+      </Stack>
     </Stack>
   );
 
@@ -131,26 +87,8 @@ export default function WordManagerWordItem({
         width: '100%',
         ...sx,
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       {...other}
     >
-      <Stack direction="row" alignItems="between" justifyContent="space-between">
-        {/* {isHovered && (
-          <Iconify
-            icon="ri:more-fill"
-            sx={{
-              width: 24,
-              height: 24,
-              marginRight: 1,
-              cursor: 'pointer',
-            }}
-            onClick={(event) => {
-              onEditRow(item);
-            }}
-          />
-        )} */}
-      </Stack>
       {renderText}
     </Stack>
   );
