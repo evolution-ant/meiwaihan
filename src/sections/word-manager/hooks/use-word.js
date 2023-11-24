@@ -41,33 +41,29 @@ mutation ($id:ID!,$status:ENUM_WORD_STATUS){
 `;
 
 const buildFilters = (filters) => {
-    const { language, status, type, text } = filters;
-    const filtersObj = {};
-    if(language) {
-        filtersObj.language = {
-            eq: language
-        };
-    }
-    if(status&&status!=='all') {
-        filtersObj.status = {
-            eq: status
-        };
-    }
-    if(type) {
-        filtersObj.type = {
-            eq: type
-        };
-    }
-    if(text) {
-        filtersObj.text = {
-            contains: text
-        };
-    }
-    return {
-        page: 1,
-        pageSize: 10,
-        filters: filtersObj
+  const { language, status, type, text } = filters;
+  const filtersObj = {};
+  if (language) {
+    filtersObj.language = {
+      eq: language,
     };
+  }
+  if (status && status !== 'all') {
+    filtersObj.status = {
+      eq: status,
+    };
+  }
+  if (type) {
+    filtersObj.type = {
+      eq: type,
+    };
+  }
+  if (text) {
+    filtersObj.text = {
+      contains: text,
+    };
+  }
+  return filtersObj;
 };
 
 export default function useWord() {
@@ -77,7 +73,7 @@ export default function useWord() {
 
   const [wordPagination, setWordPagination] = useState({
     page: 1,
-    pageSize: 20,
+    pageSize: 25,
   });
 
   const [wordsStatus, setWordsStatus] = useState({
@@ -93,7 +89,6 @@ export default function useWord() {
     }));
   }, []);
 
-
   const getWords = useCallback(
     async (sort, filters) => {
       handleSetWordsStatus('loading', true);
@@ -104,7 +99,11 @@ export default function useWord() {
       try {
         const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
           query: WORDS_QUERY,
-          variables: buildFilters(filters),
+          variables: {
+            page: wordPagination.page,
+            pageSize: wordPagination.pageSize,
+            filters: buildFilters(filters),
+          },
         });
         const fetchedWords = response.data.data.words.data;
         setWords(fetchedWords);
@@ -118,7 +117,7 @@ export default function useWord() {
           total: pagination.total,
         });
         setWordsCount(pagination.total);
-        
+
         handleSetWordsStatus('loading', false);
         handleSetWordsStatus('empty', !response.data.words.length);
         handleSetWordsStatus('error', null);
@@ -129,32 +128,29 @@ export default function useWord() {
         handleSetWordsStatus('error', error);
       }
     },
-    [handleSetWordsStatus]
+    [handleSetWordsStatus,wordPagination.page, wordPagination.pageSize]
   );
 
-  const updateWordStatus = useCallback(
-    async (id, status) => {
-      try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
-          query: UPDATE_WORD_STATUS_MUTATION,
-          variables: {
-            id,
-            status,
-          },
-        });
-        const updatedWord = response.data.data.updateWordStatus;
-        // setWords((prevState) => {
-        //   const newState = [...prevState];
-        //   const index = newState.findIndex((word) => word.id === updatedWord.id);
-        //   newState[index] = updatedWord;
-        //   return newState;
-        // });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    []
-  );
+  const updateWordStatus = useCallback(async (id, status) => {
+    try {
+      const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
+        query: UPDATE_WORD_STATUS_MUTATION,
+        variables: {
+          id,
+          status,
+        },
+      });
+      const updatedWord = response.data.data.updateWordStatus;
+      // setWords((prevState) => {
+      //   const newState = [...prevState];
+      //   const index = newState.findIndex((word) => word.id === updatedWord.id);
+      //   newState[index] = updatedWord;
+      //   return newState;
+      // });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   return {
     wordPagination,
@@ -166,6 +162,6 @@ export default function useWord() {
     setWords,
     getWords,
     wordsCount,
-    updateWordStatus
+    updateWordStatus,
   };
 }

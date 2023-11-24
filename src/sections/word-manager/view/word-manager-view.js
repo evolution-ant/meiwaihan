@@ -53,7 +53,7 @@ export default function WordManagerView() {
 
   const [sortBy, setSortBy] = useState('updatedAt:desc');
 
-  const allTypes = ["default"];
+  const allTypes = ['default'];
 
   useEffect(() => {
     getWords(sortBy, filters);
@@ -65,7 +65,7 @@ export default function WordManagerView() {
 
   const createOrUpdate = useBoolean();
 
-  const canReset = filters.type!=='default' || filters.status!=='' || !!filters.text;
+  const canReset = filters.type !== 'default' || filters.status !== '' || !!filters.text;
 
   const notFound = (!wordsCount && canReset) || !wordsCount;
 
@@ -158,13 +158,13 @@ export default function WordManagerView() {
     [setWords, deleteWord]
   );
 
-const handleDifficultyChange = useCallback(
+  const handleDifficultyChange = useCallback(
     async (id, status) => {
-        await updateWordStatus(id, status);
-        getWords(sortBy, filters);
+      await updateWordStatus(id, status);
+      getWords(sortBy, filters);
     },
     [getWords, sortBy, filters, updateWordStatus]
-);
+  );
 
   const renderFilters = (
     <Stack
@@ -175,11 +175,7 @@ const handleDifficultyChange = useCallback(
       direction={{ xs: 'column', md: 'row' }}
       alignItems="center"
     >
-    <WordManagerFilters
-        filters={filters}
-        onFilters={handleFilters}
-        typeOptions={allTypes}
-      />
+      <WordManagerFilters filters={filters} onFilters={handleFilters} typeOptions={allTypes} />
       <Box>
         <WordSort
           sort={sortBy}

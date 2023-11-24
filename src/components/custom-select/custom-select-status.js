@@ -12,7 +12,7 @@ import Label from 'src/components/label';
 export default function CustomSelectStatus({ select, onSelect }) {
   const popover = usePopover();
 
-  const selectOptions = ['all', 'hard', 'normal', 'easy'];
+  const selectOptions = ['', 'hard', 'normal', 'easy'];
   const selectedOption = selectOptions.find((option) => option === select);
 
   const renderIcon = () => {
@@ -37,7 +37,7 @@ export default function CustomSelectStatus({ select, onSelect }) {
         </Label>
       );
     }
-    return selectedOption;
+    return "All";
   };
 
   return (
@@ -67,7 +67,7 @@ export default function CustomSelectStatus({ select, onSelect }) {
               onSelect(option);
             }}
           >
-            {option}
+            {option?<>{option}</>:"all"}
           </MenuItem>
         ))}
       </CustomPopover>

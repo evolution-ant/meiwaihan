@@ -76,7 +76,7 @@ export default function WordManagerGridView({
           onRowsPerPageChange={onRowsPerPageChange}
           rowsPerPageOptions={[5, 10, 25, 50, 100, 10000]}
           sx={{
-            width: '80%',
+            width: '100%',
             [`& .${tablePaginationClasses.toolbar}`]: {
               borderTopColor: 'transparent',
             },
