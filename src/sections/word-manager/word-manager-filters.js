@@ -91,7 +91,6 @@ export default function WordManagerFilters({
           >
             {typeOptions.map((type) => {
               const selected = filters.type === type;
-
               return (
                 <CardActionArea
                   key={type}

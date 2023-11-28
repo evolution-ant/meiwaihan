@@ -6,8 +6,8 @@ import axios from 'src/utils/axios';
 // 定义GraphQL查询
 
 const WORDS_QUERY = `
-query($page: Int!, $pageSize: Int!, $filters: WordFiltersInput!) {
-    words(pagination: { page: $page, pageSize: $pageSize }, filters: $filters) {
+query($sortParams:[String], $page: Int!, $pageSize: Int!, $filters: WordFiltersInput!) {
+    words(pagination: { page: $page, pageSize: $pageSize }, filters: $filters, sort:$sortParams) {
       data {
         id
         attributes {
@@ -102,6 +102,7 @@ export default function useWord() {
           variables: {
             page: wordPagination.page,
             pageSize: wordPagination.pageSize,
+            sortParams: [sort],
             filters: buildFilters(filters),
           },
         });
@@ -128,7 +129,7 @@ export default function useWord() {
         handleSetWordsStatus('error', error);
       }
     },
-    [handleSetWordsStatus,wordPagination.page, wordPagination.pageSize]
+    [handleSetWordsStatus, wordPagination.page, wordPagination.pageSize]
   );
 
   const updateWordStatus = useCallback(async (id, status) => {
