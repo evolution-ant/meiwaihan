@@ -6,6 +6,8 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
+import { useSnackbar } from 'src/components/snackbar';
 
 export default function WordManagerWordItem({
   word,
@@ -20,9 +22,15 @@ export default function WordManagerWordItem({
 }) {
   const [item, setItem] = useState(word);
 
+  const { copy } = useCopyToClipboard();
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const speakText = (times) => {
     const content =
       item.attributes.language === 'en' ? item.attributes.text : item.attributes.translatedText;
+    enqueueSnackbar('Copied!');
+    copy(content);
 
     const synth = window.speechSynthesis;
     let voices = [];
