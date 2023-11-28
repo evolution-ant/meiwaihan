@@ -33,8 +33,8 @@ export default function WordManagerWordItem({
       if (sandyVoice) {
         const utterance = new SpeechSynthesisUtterance(content);
         utterance.voice = sandyVoice;
-        for(let i = 0; i < times; i+=1){
-            synth.speak(utterance);
+        for (let i = 0; i < times; i += 1) {
+          synth.speak(utterance);
         }
       } else {
         console.log('Alex voice not found');
@@ -55,63 +55,51 @@ export default function WordManagerWordItem({
     speakText(3);
   };
 
-  const difficultyButtons = (
+  const hiddenView = (
     <Stack
-      direction="row"
-      spacing={2}
-      className="difficulty-buttons"
       sx={{
         visibility: 'hidden',
-        mt: 2,
-        // position: 'absolute',
-        // bottom: 8,
-        // right: 8,
       }}
+      className="difficulty-buttons"
     >
-      <Button
-        variant={item.attributes.status === 'easy' ? 'contained' : 'outlined'}
-        color="success"
-        onClick={() => {
-          speakText(1);
-          onDifficultyChange(item.id, 'easy');
+      {item.attributes.translatedText}
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          mt: 2,
         }}
       >
-        Easy
-      </Button>
-      <Button
-        variant={item.attributes.status === 'normal' ? 'contained' : 'outlined'}
-        color="warning"
-        onClick={() => {
-          speakText(1);
-          onDifficultyChange(item.id, 'normal');
-        }}
-      >
-        Normal
-      </Button>
-      <Button
-        variant={item.attributes.status === 'hard' ? 'contained' : 'outlined'}
-        color="error"
-        onClick={() => {
-          speakText(1);
-          onDifficultyChange(item.id, 'hard');
-        }}
-      >
-        Hard
-      </Button>
-    </Stack>
-  );
-
-  const renderText = (
-    <Stack
-      sx={{
-        width: '100%',
-      }}
-    >
-      <Stack direction="row" alignItems="start">
-        <Stack>
-          <Typography variant="h4">{item.attributes.text}</Typography>
-          {item.attributes.translatedText}
-        </Stack>
+        <Button
+          variant={item.attributes.status === 'easy' ? 'contained' : 'outlined'}
+          color="success"
+          onClick={() => {
+            speakText(1);
+            onDifficultyChange(item.id, 'easy');
+          }}
+        >
+          Easy
+        </Button>
+        <Button
+          variant={item.attributes.status === 'normal' ? 'contained' : 'outlined'}
+          color="warning"
+          onClick={() => {
+            speakText(1);
+            onDifficultyChange(item.id, 'normal');
+          }}
+        >
+          Normal
+        </Button>
+        <Button
+          variant={item.attributes.status === 'hard' ? 'contained' : 'outlined'}
+          color="error"
+          onClick={() => {
+            speakText(1);
+            onDifficultyChange(item.id, 'hard');
+          }}
+        >
+          Hard
+        </Button>
       </Stack>
     </Stack>
   );
@@ -138,8 +126,10 @@ export default function WordManagerWordItem({
       }}
       {...other}
     >
-      {renderText}
-      {difficultyButtons}
+      <Stack>
+        <Typography variant="h4">{item.attributes.text}</Typography>
+      </Stack>
+      {hiddenView}
     </Stack>
   );
 }
