@@ -53,7 +53,7 @@ const ICONS = {
 // ----------------------------------------------------------------------
 
 function transformData(originalData) {
-  const result = originalData.data.attributes.items.data
+  const result = originalData.attributes.items.data
     .sort((a, b) => a.attributes.order - b.attributes.order)
     .map((item) => ({
       ...transformItem(item, true),
@@ -92,8 +92,8 @@ export function useNavData() {
     const fetchData = async () => {
       const accessToken = localStorage.getItem('accessToken');
       setSession(accessToken);
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API  }/menus/13?nested&populate=*`);
-      const responseData = response.data;
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API}/menus?filters[title][$eq]=Admin&nested&populate=*`);
+      const responseData = response.data.data[0];
       const transformedData = transformData(responseData);
       setData(transformedData);
     };
