@@ -16,6 +16,7 @@ query($sortParams:[String], $page: Int!, $pageSize: Int!, $filters: WordFiltersI
           language
           status
           type
+          imageUrl
         }
       }
       meta {

@@ -121,11 +121,14 @@ export default function WordManagerWordItem({
         py: 3,
         px: 5,
         borderRadius: 2,
-        bgcolor: 'unset',
         cursor: 'pointer',
         width: '100%',
         position: 'relative',
+        color: '#fff', // 文字颜色（可根据需要调整）
         '&:hover': {
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${item.attributes.imageUrl})`, // hover 时显示图片和蒙版
+          backgroundSize: 'cover', // 确保图片覆盖整个元素
+          backgroundPosition: 'center', // 图片居中
           '& .difficulty-buttons': {
             visibility: 'visible',
           },
