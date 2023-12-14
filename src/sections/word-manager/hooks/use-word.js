@@ -12,11 +12,23 @@ query($sortParams:[String], $page: Int!, $pageSize: Int!, $filters: WordFiltersI
         id
         attributes {
           text
+          phonetic
           translatedText
+          explanation
+          origin
+          sourceSentence
+          translationSentence
           language
           status
           type
-          imageUrl
+          image{
+            data{
+                attributes{
+                    hash
+                    ext
+                }
+            }
+          }
         }
       }
       meta {

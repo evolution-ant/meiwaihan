@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
 import { useSnackbar } from 'src/components/snackbar';
+import SvgColor from 'src/components/svg-color';
+
 
 export default function WordManagerWordItem({
   word,
@@ -70,7 +72,16 @@ export default function WordManagerWordItem({
       }}
       className="difficulty-buttons"
     >
-      {item.attributes.translatedText}
+      <Stack>
+        <Typography variant="h5">
+          「{item.attributes.translatedText}」
+        </Typography>
+        
+        <Typography><SvgColor mr={1} src="/assets/icons/word-types/word_detail.svg" />{item.attributes.explanation}</Typography>
+        <Typography><SvgColor mr={1} src="/assets/icons/word-types/word_origin.svg" />{item.attributes.origin}</Typography>
+        <Typography><SvgColor mr={1} src="/assets/icons/word-types/word_message.svg" />{item.attributes.sourceSentence}</Typography>
+        <Typography ml={4}>{item.attributes.translationSentence}</Typography>
+      </Stack>
       <Stack
         direction="row"
         spacing={2}
@@ -79,6 +90,7 @@ export default function WordManagerWordItem({
         }}
       >
         <Button
+          size="small"
           variant={item.attributes.status === 'easy' ? 'contained' : 'outlined'}
           color="success"
           onClick={() => {
@@ -89,6 +101,7 @@ export default function WordManagerWordItem({
           Easy
         </Button>
         <Button
+          size="small"
           variant={item.attributes.status === 'normal' ? 'contained' : 'outlined'}
           color="warning"
           onClick={() => {
@@ -99,6 +112,7 @@ export default function WordManagerWordItem({
           Normal
         </Button>
         <Button
+          size="small"
           variant={item.attributes.status === 'hard' ? 'contained' : 'outlined'}
           color="error"
           onClick={() => {
@@ -111,7 +125,8 @@ export default function WordManagerWordItem({
       </Stack>
     </Stack>
   );
-
+  const imageUrl = `${process.env.NEXT_PUBLIC_STRAPI}/uploads/${item.attributes.image.data?.attributes.hash}${item.attributes.image.data?.attributes.ext}`;
+  console.log('imageUrl', imageUrl);
   return (
     <Stack
       component={Paper}
@@ -123,10 +138,10 @@ export default function WordManagerWordItem({
         borderRadius: 2,
         cursor: 'pointer',
         width: '100%',
-        position: 'relative',
         color: '#fff', // 文字颜色（可根据需要调整）
+        position: 'relative',
         '&:hover': {
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${item.attributes.imageUrl})`, // hover 时显示图片和蒙版
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${imageUrl})`, // hover 时显示图片和蒙版
           backgroundSize: 'cover', // 确保图片覆盖整个元素
           backgroundPosition: 'center', // 图片居中
           '& .difficulty-buttons': {
@@ -137,8 +152,11 @@ export default function WordManagerWordItem({
       }}
       {...other}
     >
-      <Stack>
-        <Typography variant="h4">{item.attributes.text}</Typography>
+      <Stack direction="row" alignItems="baseline">
+        <Typography variant="h4" mr={1}>
+          {item.attributes.text}
+        </Typography>
+        {item.attributes.phonetic}
       </Stack>
       {hiddenView}
     </Stack>
