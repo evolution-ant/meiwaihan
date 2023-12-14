@@ -73,14 +73,14 @@ export default function WordManagerWordItem({
       className="difficulty-buttons"
     >
       <Stack>
-        <Typography variant="h5">
-          「{item.attributes.translatedText}」
+        <Typography variant="h5" color="secondary">
+          {item.attributes.translatedText}
         </Typography>
         
-        <Typography><SvgColor mr={1} src="/assets/icons/word-types/word_detail.svg" />{item.attributes.explanation}</Typography>
-        <Typography><SvgColor mr={1} src="/assets/icons/word-types/word_origin.svg" />{item.attributes.origin}</Typography>
-        <Typography><SvgColor mr={1} src="/assets/icons/word-types/word_message.svg" />{item.attributes.sourceSentence}</Typography>
-        <Typography ml={4}>{item.attributes.translationSentence}</Typography>
+        <Typography variant="body2"><SvgColor mr={1} src="/assets/icons/word-types/word_detail.svg" />{item.attributes.explanation}</Typography>
+        <Typography variant="body2"><SvgColor mr={1} src="/assets/icons/word-types/word_origin.svg" />{item.attributes.origin}</Typography>
+        <Typography fontStyle="italic"><SvgColor mr={1} src="/assets/icons/word-types/word_message.svg" />{item.attributes.sourceSentence}</Typography>
+        <Typography variant="body2" ml={4}>{item.attributes.translationSentence}</Typography>
       </Stack>
       <Stack
         direction="row"
