@@ -9,7 +9,8 @@ import Button from '@mui/material/Button';
 import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
 import { useSnackbar } from 'src/components/snackbar';
 import SvgColor from 'src/components/svg-color';
-
+import Iconify from 'src/components/iconify';
+import IconButton from '@mui/material/IconButton';
 
 export default function WordManagerWordItem({
   word,
@@ -28,42 +29,47 @@ export default function WordManagerWordItem({
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const speakText = (times) => {
-    const content =
+  const copyText = () => {
+    const text =
       item.attributes.language === 'en' ? item.attributes.text : item.attributes.translatedText;
     enqueueSnackbar('Copied!');
-    copy(content);
+    copy(text);
+  };
 
+  const setVoice = (content, times = 1) => {
     const synth = window.speechSynthesis;
     let voices = [];
-
-    const setVoice = () => {
-      voices = synth.getVoices();
-      const sandyVoice = voices.find((voice) => voice.name === 'Alex'); // Using 'Alex' as the voice
-      if (sandyVoice) {
-        const utterance = new SpeechSynthesisUtterance(content);
-        utterance.voice = sandyVoice;
-        for (let i = 0; i < times; i += 1) {
-          synth.speak(utterance);
-        }
-      } else {
-        console.log('Alex voice not found');
+    voices = synth.getVoices();
+    const sandyVoice = voices.find((voice) => voice.name === 'Alex'); // Using 'Alex' as the voice
+    if (sandyVoice) {
+      const utterance = new SpeechSynthesisUtterance(content);
+      utterance.voice = sandyVoice;
+      for (let i = 0; i < times; i += 1) {
+        synth.speak(utterance);
       }
-    };
-
+    } else {
+      console.log('Alex voice not found');
+    }
     if (synth.onvoiceschanged !== undefined) {
       synth.onvoiceschanged = setVoice;
     }
-    setVoice();
+  };
+
+  const speakText = (times = 1) => {
+    const text =
+      item.attributes.language === 'en' ? item.attributes.text : item.attributes.translatedText;
+    setVoice(text);
+  };
+
+  const speakSentence = (times = 1) => {
+    const text = item.attributes.sourceSentence;
+    console.log('text', text);
+    setVoice(text);
   };
 
   useEffect(() => {
     setItem(word);
   }, [word]);
-
-  const handleDoubleClick = () => {
-    speakText(3);
-  };
 
   const hiddenView = (
     <Stack
@@ -76,11 +82,33 @@ export default function WordManagerWordItem({
         <Typography variant="h5" color="secondary">
           {item.attributes.translatedText}
         </Typography>
-        
-        <Typography variant="body2"><SvgColor mr={1} src="/assets/icons/word-types/word_detail.svg" />{item.attributes.explanation}</Typography>
-        <Typography variant="body2"><SvgColor mr={1} src="/assets/icons/word-types/word_origin.svg" />{item.attributes.origin}</Typography>
-        <Typography fontStyle="italic"><SvgColor mr={1} src="/assets/icons/word-types/word_message.svg" />{item.attributes.sourceSentence}</Typography>
-        <Typography variant="body2" color="primary" ml={4}>{item.attributes.translationSentence}</Typography>
+
+        <Typography variant="body2">
+          <IconButton size="large" disabled="true">
+            <Iconify width="24" icon="fluent:apps-list-detail-20-filled" />
+          </IconButton>
+          {item.attributes.explanation}
+        </Typography>
+        <Typography variant="body2">
+          <IconButton size="large" disabled="true">
+            <Iconify width="24" icon="material-symbols:history-edu" />
+          </IconButton>
+          {item.attributes.origin}
+        </Typography>
+        <Typography fontStyle="italic">
+          <IconButton
+            size="large"
+            onClick={() => {
+              speakSentence();
+            }}
+          >
+            <Iconify width="24" icon="tabler:message" />
+          </IconButton>
+          {item.attributes.sourceSentence}
+        </Typography>
+        <Typography variant="body2" color="primary" ml={4}>
+          {item.attributes.translationSentence}
+        </Typography>
       </Stack>
       <Stack
         direction="row"
@@ -94,7 +122,7 @@ export default function WordManagerWordItem({
           variant={item.attributes.status === 'easy' ? 'contained' : 'outlined'}
           color="success"
           onClick={() => {
-            speakText(1);
+            speakText();
             onDifficultyChange(item.id, 'easy');
           }}
         >
@@ -105,7 +133,8 @@ export default function WordManagerWordItem({
           variant={item.attributes.status === 'normal' ? 'contained' : 'outlined'}
           color="warning"
           onClick={() => {
-            speakText(1);
+            copyText();
+            speakText();
             onDifficultyChange(item.id, 'normal');
           }}
         >
@@ -116,7 +145,8 @@ export default function WordManagerWordItem({
           variant={item.attributes.status === 'hard' ? 'contained' : 'outlined'}
           color="error"
           onClick={() => {
-            speakText(1);
+            copyText();
+            speakText();
             onDifficultyChange(item.id, 'hard');
           }}
         >
@@ -131,7 +161,12 @@ export default function WordManagerWordItem({
     <Stack
       component={Paper}
       variant="outlined"
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={() => {
+        speakText(3);
+      }}
+      onMouseEnter={() => {
+        speakText();
+      }}
       sx={{
         py: 3,
         px: 5,
