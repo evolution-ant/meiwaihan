@@ -58,13 +58,13 @@ export default function WordManagerWordItem({
   const speakText = (times = 1) => {
     const text =
       item.attributes.language === 'en' ? item.attributes.text : item.attributes.translatedText;
-    setVoice(text);
+    setVoice(text, times);
   };
 
   const speakSentence = (times = 1) => {
     const text = item.attributes.sourceSentence;
     console.log('text', text);
-    setVoice(text);
+    setVoice(text, times);
   };
 
   useEffect(() => {
@@ -155,14 +155,14 @@ export default function WordManagerWordItem({
       </Stack>
     </Stack>
   );
-  const imageUrl = `${process.env.NEXT_PUBLIC_STRAPI}/uploads/${item.attributes.image.data?.attributes.hash}${item.attributes.image.data?.attributes.ext}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_STRAPI}/uploads/medium_${item.attributes.image.data?.attributes.hash}${item.attributes.image.data?.attributes.ext}`;
   console.log('imageUrl', imageUrl);
   return (
     <Stack
       component={Paper}
       variant="outlined"
       onDoubleClick={() => {
-        speakText(3);
+        speakText();
       }}
       onMouseEnter={() => {
         speakText();
