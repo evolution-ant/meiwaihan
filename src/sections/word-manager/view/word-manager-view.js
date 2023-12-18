@@ -53,7 +53,7 @@ export default function WordManagerView() {
 
   const [sortBy, setSortBy] = useState('updatedAt:desc');
 
-  const allTypes = ['default'];
+  const allTypes = ['default','letter'];
 
   useEffect(() => {
     getWords(sortBy, filters);
