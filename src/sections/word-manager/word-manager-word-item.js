@@ -40,6 +40,8 @@ export default function WordManagerWordItem({
     const synth = window.speechSynthesis;
     let voices = [];
     voices = synth.getVoices();
+    const names = voices.map((voice) => voice.name);
+    alert(names)
     const sandyVoice = voices.find((voice) => voice.name === 'Alex'); // Using 'Alex' as the voice
     if (sandyVoice) {
       const utterance = new SpeechSynthesisUtterance(content);
