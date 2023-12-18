@@ -40,9 +40,13 @@ export default function WordManagerWordItem({
     const synth = window.speechSynthesis;
     let voices = [];
     voices = synth.getVoices();
-    const names = voices.map((voice) => voice.name);
-    alert(names)
-    const sandyVoice = voices.find((voice) => voice.name === 'Alex'); // Using 'Alex' as the voice
+    // const names = voices.map((voice) => voice.name);
+    // console.log('names', names);
+    // Albert, Anna, Bad News, Bahh, Bells, Cellos, Daria, Eddy, Flo, Fred, Grandma, Grandpa, Jester, Kathy, Majed, Melina, Moira, Montse, Reed, Sandy, Shelley
+    let sandyVoice = voices.find((voice) => voice.name === 'Alex'); // Using 'Kathy,Fred,Melina,Moira' as the voice
+    if (!sandyVoice){
+        sandyVoice = voices.find((voice) => voice.name === 'Moira'); 
+    }
     if (sandyVoice) {
       const utterance = new SpeechSynthesisUtterance(content);
       utterance.voice = sandyVoice;
