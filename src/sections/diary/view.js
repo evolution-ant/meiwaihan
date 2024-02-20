@@ -77,7 +77,7 @@ const defaultFilters = {
 
 export default function TimelineView() {
   const [data, setData] = useState([]);
-  const { diaries, getDiaries, createDiary } = useDiary();
+  const { diaries, getDiaries, createDiary, deleteDiary } = useDiary();
   const [filters, setFilters] = useState(defaultFilters);
   const dateError = isDateError(filters.startDate, filters.endDate);
   const isCreate = useBoolean();
@@ -126,6 +126,13 @@ export default function TimelineView() {
     [createDiary]
   );
 
+  const onDelete = useCallback(
+    (id) => {
+      deleteDiary(id);
+    },
+    [deleteDiary]
+  );
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 4 }}>
@@ -138,7 +145,7 @@ export default function TimelineView() {
           Create
         </Button>
       </Stack>
-      <NewDiaryDialog open={isCreate.value} onClose={isCreate.onFalse} onCreate={onCreate} />
+      <NewDiaryDialog open={isCreate.value} onClose={isCreate.onFalse} onCreate={onCreate} onDelete={onDelete} />
       <DialyFilters
         typeStyles={typeStyles}
         openDateRange={openDateRange.value}

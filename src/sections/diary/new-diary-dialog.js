@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 // @mui
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -12,6 +14,7 @@ import { CustomSelectLabel } from 'src/components/custom-select';
 import Checkbox from '@mui/material/Checkbox';
 import Iconify from 'src/components/iconify';
 import { useBoolean } from 'src/hooks/use-boolean';
+import { set } from 'nprogress';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +24,7 @@ export default function NewDiaryDialog({
   onClose,
   //
   onCreate,
+  onDelete,
   //
   ...other
 }) {
@@ -47,6 +51,7 @@ export default function NewDiaryDialog({
     setHappenedAt(new Date());
     onClose();
   };
+
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose} {...other}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 2.5 }}>
@@ -61,9 +66,9 @@ export default function NewDiaryDialog({
       </Stack>
       <DialogContent dividers sx={{ pt: 1, pb: 0, border: 'none' }}>
         <Stack spacing={2}>
+          Title
           <TextField
             fullWidth
-            label="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -76,12 +81,13 @@ export default function NewDiaryDialog({
           />
           Description
           <TextField
-            label="Description"
             multiline
             rows={5}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+          Date
+          <DatePicker format="dd/MM/yyyy" value={happenedAt} onChange={setHappenedAt}/>
         </Stack>
       </DialogContent>
 
@@ -101,4 +107,5 @@ NewDiaryDialog.propTypes = {
   onCreate: PropTypes.func,
   open: PropTypes.bool,
   dialogTitle: PropTypes.string,
+  onDelete: PropTypes.func,
 };

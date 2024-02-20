@@ -24,7 +24,7 @@ query diaries($filters:DiaryFiltersInput!){
   }
 `;
 
-const CREATE_Diary_MUTATION = `
+const CREATE_DIARY_MUTATION = `
 mutation createDiary($input: DiaryInput!) {
     createDiary(data: $input) {
       data {
@@ -39,11 +39,22 @@ mutation createDiary($input: DiaryInput!) {
     }
   }  
 `;
+
+const DELETE_DIARY_MUTATION = `
+mutation deleteDiary($id: ID!) {
+    deleteDiary(id: $id) {
+        data {
+            id
+        }
+    }
+}
+`;
+
 function buildFilters({ title, type, startDate, endDate }) {
   const filters = {};
 
   if (type) {
-    filters.type = { eq: type  };
+    filters.type = { eq: type };
   }
 
   if (title) {
@@ -86,9 +97,9 @@ export default function useDiary() {
         console.log('filters', filters);
         const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
           query: DIARIES_QUERY,
-            variables: {
-                filters,
-            },
+          variables: {
+            filters,
+          },
         });
         console.log('response', response);
         const fetchedDiaries = response.data.data.diaries.data;
@@ -112,30 +123,48 @@ export default function useDiary() {
 
   const createDiary = useCallback(
     async (Diary) => {
-        const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
-            query: CREATE_Diary_MUTATION,
-            variables: {
-                input: 
-                Diary,
-            },
-        });
-        const createdDiary = response.data.data.createDiary.data;
-        setDiaries((prevState) => {
-            const newState = [...prevState];
-            newState.unshift(createdDiary);
-            return newState;
-        });
-        return createdDiary;
+      const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
+        query: CREATE_DIARY_MUTATION,
+        variables: {
+          input: Diary,
+        },
+      });
+      const createdDiary = response.data.data.createDiary.data;
+      setDiaries((prevState) => {
+        const newState = [...prevState];
+        newState.unshift(createdDiary);
+        return newState;
+      });
+      return createdDiary;
     },
     [setDiaries]
-    );
+  );
 
+  // 删除日记
+  const deleteDiary = useCallback(
+    async (DiaryId) => {
+      const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
+        query: DELETE_DIARY_MUTATION,
+        variables: {
+          id: DiaryId,
+        },
+      });
+      const deletedDiary = response.data.data.deleteDiary.data;
+      setDiaries((prevState) => {
+        const newState = prevState.filter((Diary) => Diary.id !== deletedDiary.id);
+        return newState;
+      });
+      return deletedDiary;
+    },
+    [setDiaries]
+  );
 
   return {
     DiarysStatus,
     diaries,
     setDiaries,
     getDiaries,
-    createDiary
+    createDiary,
+    deleteDiary,
   };
 }
