@@ -77,10 +77,12 @@ const defaultFilters = {
 
 export default function TimelineView() {
   const [data, setData] = useState([]);
-  const { diaries, getDiaries, createDiary, deleteDiary } = useDiary();
+  const { diaries, getDiaries, createDiary, updateDiary, deleteDiary } = useDiary();
   const [filters, setFilters] = useState(defaultFilters);
   const dateError = isDateError(filters.startDate, filters.endDate);
   const isCreate = useBoolean();
+  const isEdit = useBoolean();
+  const [editingDiary, setEditingDiary] = useState(null);
 
   const canReset = !!filters.title || !!filters.type || (!!filters.startDate && !!filters.endDate);
 
@@ -106,14 +108,15 @@ export default function TimelineView() {
   useEffect(() => {
     const newData = diaries.map((item) => {
       const type = typeStyles.find((ts) => ts.type === item.attributes.type);
-      const time = item.attributes.happenedAt.split('T')[0];
+      const happenedAt = item.attributes.happenedAt.split('T')[0];
       return {
         key: item.id,
         title: item.attributes.title,
         des: item.attributes.description,
-        time,
+        happenedAt,
         color: type.color,
         icon: type.icon,
+        item
       };
     });
     setData(newData);
@@ -124,6 +127,13 @@ export default function TimelineView() {
       createDiary(item);
     },
     [createDiary]
+  );
+
+  const onUpdated = useCallback(
+    (id, item) => {
+      updateDiary(id, item);
+    },
+    [updateDiary]
   );
 
   const onDelete = useCallback(
@@ -145,7 +155,15 @@ export default function TimelineView() {
           Create
         </Button>
       </Stack>
-      <NewDiaryDialog open={isCreate.value} onClose={isCreate.onFalse} onCreate={onCreate} onDelete={onDelete} />
+      <NewDiaryDialog open={isCreate.value} onClose={isCreate.onFalse} onCreate={onCreate} />
+      <NewDiaryDialog
+        open={isEdit.value}
+        onClose={isEdit.onFalse}
+        onUpdate={onUpdated}
+        isEditing={isEdit.value}
+        editingDiary={editingDiary}
+        onDelete={onDelete}
+      />
       <DialyFilters
         typeStyles={typeStyles}
         openDateRange={openDateRange.value}
@@ -170,10 +188,18 @@ export default function TimelineView() {
       {/* <ComponentBlock title="Events"> */}
       <Timeline position="alternate">
         {data.map((item) => (
-          <TimelineItem key={item.key}>
+          <TimelineItem
+            key={item.key}
+            // 添加右键点击事件
+            onContextMenu={(e) => {
+              e.preventDefault();
+              setEditingDiary(item.item);
+              isEdit.onTrue();
+            }}
+          >
             <TimelineOppositeContent>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {item.time}
+                {item.happenedAt}
               </Typography>
             </TimelineOppositeContent>
             <TimelineSeparator>

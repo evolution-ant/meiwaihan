@@ -40,6 +40,22 @@ mutation createDiary($input: DiaryInput!) {
   }  
 `;
 
+const UPDATE_DIARY_MUTATION = `
+mutation updateDiary($id: ID!, $input: DiaryInput!) {
+    updateDiary(id: $id, data: $input) {
+        data {
+            id
+            attributes {
+                title
+                description
+                type
+                happenedAt
+            }
+        }
+    }
+}
+`;
+
 const DELETE_DIARY_MUTATION = `
 mutation deleteDiary($id: ID!) {
     deleteDiary(id: $id) {
@@ -140,6 +156,32 @@ export default function useDiary() {
     [setDiaries]
   );
 
+  const updateDiary = useCallback(
+    async (DiaryId, Diary) => {
+      const response = await axios.post(process.env.NEXT_PUBLIC_GRAPHQL_API, {
+        query: UPDATE_DIARY_MUTATION,
+        variables: {
+          id: DiaryId,
+          input: Diary,
+        },
+      });
+      const updatedDiary = response.data.data.updateDiary.data;
+
+      setDiaries((prevState) => {
+        const newState = prevState.map((d) => {
+          if (d.id === updatedDiary.id) {
+            return updatedDiary;
+          }
+          return d;
+        });
+        return newState;
+      });
+      return updatedDiary;
+    },
+    [setDiaries]
+  );
+
+
   // 删除日记
   const deleteDiary = useCallback(
     async (DiaryId) => {
@@ -166,5 +208,6 @@ export default function useDiary() {
     getDiaries,
     createDiary,
     deleteDiary,
+    updateDiary
   };
 }

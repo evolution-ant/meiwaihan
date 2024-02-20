@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useState, useEffect } from 'react';
 // @mui
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
@@ -13,65 +12,89 @@ import Dialog from '@mui/material/Dialog';
 import { CustomSelectLabel } from 'src/components/custom-select';
 import Checkbox from '@mui/material/Checkbox';
 import Iconify from 'src/components/iconify';
-import { useBoolean } from 'src/hooks/use-boolean';
-import { set } from 'nprogress';
 
 // ----------------------------------------------------------------------
 
 export default function NewDiaryDialog({
-  dialogTitle = 'Create Diary',
   open,
   onClose,
-  //
   onCreate,
+  onUpdate,
   onDelete,
-  //
+  editingDiary,
+  isEditing = false,
   ...other
 }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedType, setSelectedType] = useState('');
-  const historyToogle = useBoolean(false);
+  const [historyToogle, setHistoryToogle] = useState(false);
+
   const [happenedAt, setHappenedAt] = useState(new Date());
 
-  const handleClick = () => {
+  useEffect(() => {
+    if (isEditing) {
+      setTitle(editingDiary.attributes.title);
+      setDescription(editingDiary.attributes.description);
+      setSelectedType(editingDiary.attributes.type);
+      setHappenedAt(new Date(editingDiary.attributes.happenedAt));
+    } else {
+      resetForm();
+    }
+  }, [editingDiary, isEditing]);
+
+  const handleCreateOrUpdate = () => {
     const item = {
       title,
       description,
       type: selectedType,
-      isHistory: historyToogle.value,
+      isHistory: historyToogle,
       happenedAt,
     };
-    onCreate(item);
-    // 重置
+
+    if (isEditing) {
+      onUpdate(editingDiary.id, item); // Assuming each diary entry has a unique ID
+    } else {
+      onCreate(item);
+    }
+    resetForm();
+    onClose();
+  };
+
+  const handleDelete = () => {
+    onDelete(editingDiary.id);
+    resetForm();
+    onClose();
+  };
+
+  const resetForm = () => {
     setTitle('');
     setDescription('');
     setSelectedType('');
-    historyToogle.onFalse();
+    setHistoryToogle(false);
     setHappenedAt(new Date());
-    onClose();
   };
 
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose} {...other}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 2.5 }}>
-        <Typography variant="h6"> {dialogTitle} </Typography>
+        <Typography variant="h6"> {isEditing ? 'Update Diary' : 'Create Diary'} </Typography>
         <Checkbox
           color="warning"
           icon={<Iconify icon="eva:star-outline" />}
           checkedIcon={<Iconify icon="eva:star-fill" />}
-          checked={historyToogle.value}
-          onChange={historyToogle.onToggle}
+          checked={historyToogle}
+          onChange={(event) => {
+            setHistoryToogle(event.target.checked);
+          }}
         />
       </Stack>
       <DialogContent dividers sx={{ pt: 1, pb: 0, border: 'none' }}>
         <Stack spacing={2}>
+          Date
+          <DatePicker format="dd/MM/yyyy" value={happenedAt} onChange={setHappenedAt} />
           Title
-          <TextField
-            fullWidth
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <TextField fullWidth value={title} onChange={(e) => setTitle(e.target.value)} />
           <CustomSelectLabel
             label="Type"
             options={['family', 'travel', 'study', 'friend', 'hobby', 'sports', 'work']}
@@ -86,15 +109,18 @@ export default function NewDiaryDialog({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          Date
-          <DatePicker format="dd/MM/yyyy" value={happenedAt} onChange={setHappenedAt}/>
         </Stack>
       </DialogContent>
 
       <DialogActions>
         <Stack direction="row" justifyContent="flex-end" flexGrow={1}>
-          <Button variant="soft" onClick={handleClick}>
-            Create
+          {isEditing && (
+            <Button variant="outlined" color="error" onClick={handleDelete} sx={{ mr: 3 }}>
+              Delete
+            </Button>
+          )}
+          <Button variant="soft" onClick={handleCreateOrUpdate}>
+            {isEditing ? 'Update' : 'Create'}
           </Button>
         </Stack>
       </DialogActions>
@@ -105,7 +131,9 @@ export default function NewDiaryDialog({
 NewDiaryDialog.propTypes = {
   onClose: PropTypes.func,
   onCreate: PropTypes.func,
-  open: PropTypes.bool,
-  dialogTitle: PropTypes.string,
+  onUpdate: PropTypes.func,
   onDelete: PropTypes.func,
+  open: PropTypes.bool,
+  editingDiary: PropTypes.object,
+  isEditing: PropTypes.bool,
 };
