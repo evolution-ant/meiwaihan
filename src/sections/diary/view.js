@@ -31,7 +31,6 @@ import { useDiary } from './hooks';
 
 // ----------------------------------------------------------------------
 const typeStyles = [
-
   {
     type: 'family',
     color: 'info',
@@ -78,7 +77,7 @@ const defaultFilters = {
 
 export default function TimelineView() {
   const [data, setData] = useState([]);
-  const { diaries, getDiaries , createDiary} = useDiary();
+  const { diaries, getDiaries, createDiary } = useDiary();
   const [filters, setFilters] = useState(defaultFilters);
   const dateError = isDateError(filters.startDate, filters.endDate);
   const isCreate = useBoolean();
@@ -122,13 +121,13 @@ export default function TimelineView() {
 
   const onCreate = useCallback(
     (item) => {
-        createDiary(item);
+      createDiary(item);
     },
     [createDiary]
-    );
+  );
 
   return (
-    <Container >
+    <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 4 }}>
         <Typography variant="h4">Diary</Typography>
         <Button
@@ -181,7 +180,9 @@ export default function TimelineView() {
                   bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
                 }}
               >
-                <Typography variant="title2" fontWeight='bold'>{item.title}</Typography>
+                <Typography variant="title2" fontWeight="bold">
+                  {item.title}
+                </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                   {item.des}
                 </Typography>

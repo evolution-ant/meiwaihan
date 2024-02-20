@@ -116,10 +116,10 @@ export default function useDiary() {
             query: CREATE_Diary_MUTATION,
             variables: {
                 input: 
-                     Diary,
+                Diary,
             },
         });
-        const createdDiary = response.data.data.createDiary;
+        const createdDiary = response.data.data.createDiary.data;
         setDiaries((prevState) => {
             const newState = [...prevState];
             newState.unshift(createdDiary);
