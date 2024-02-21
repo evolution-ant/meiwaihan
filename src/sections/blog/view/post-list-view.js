@@ -126,20 +126,20 @@ export default function PostListView() {
         action={
           <Button
             // component={RouterLink}
-            // href="http://localhost:1337/admin/content-manager/collectionType/api::article.article/create"
+            href={`${process.env.NEXT_PUBLIC_STRAPI}/admin/content-manager/collectionType/api::article.article/create`}
             variant="contained"
             startIcon={<Iconify icon="mingcute:add-line" />}
-            onClick={() => {
-              const audioUrl = 'https://dict.youdao.com/dictvoice?audio=word&type=1';
-              fetch(audioUrl, { mode: "no-cors" })
-              .then((response) => response.blob())
-                .then((blob) => {
-                  const url = window.URL.createObjectURL(blob);
-                  const audio = new Audio(url);
-                  audio.play();
-                })
-                .catch((error) => console.error('发生错误:', error));
-            }}
+        //     onClick={() => {
+        //       const audioUrl = 'https://dict.youdao.com/dictvoice?audio=word&type=1';
+        //       fetch(audioUrl, { mode: "no-cors" })
+        //       .then((response) => response.blob())
+        //         .then((blob) => {
+        //           const url = window.URL.createObjectURL(blob);
+        //           const audio = new Audio(url);
+        //           audio.play();
+        //         })
+        //         .catch((error) => console.error('发生错误:', error));
+        //     }}
           >
             New Post
           </Button>
