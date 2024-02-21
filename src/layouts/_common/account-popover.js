@@ -39,7 +39,8 @@ export default function AccountPopover() {
   const router = useRouter();
 
   const user = JSON.parse(localStorage.getItem('user'))
-  const avatar_url = user?.avatarThumb
+  console.log("user:",user)
+  const avatar_url = user?.avatar?.url
 
   const { logout } = useAuthContext();
 
@@ -79,7 +80,7 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={avatar_url}
+          src={`${process.env.NEXT_PUBLIC_STRAPI}${avatar_url}`}
           alt={user?.username}
           sx={{
             width: 36,
