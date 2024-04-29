@@ -84,7 +84,7 @@ export default function WordManagerWordItem({
 
   useEffect(() => {
     setItem(word);
-  }, [word,speakText]);
+  }, [word]);
 
   const imageUrl = `${process.env.NEXT_PUBLIC_STRAPI}/uploads/medium_${item.attributes.image.data?.attributes.hash}${item.attributes.image.data?.attributes.ext}`;
   console.log('imageUrl', imageUrl);
