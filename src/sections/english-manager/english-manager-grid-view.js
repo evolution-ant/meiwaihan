@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 // @mui
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -28,6 +28,36 @@ export default function WordManagerGridView({
   const containerRef = useRef(null);
 
   const words = useBoolean();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      switch (event.key) {
+        case 'ArrowRight':
+          if (pagination.page < Math.ceil(pagination.total / pagination.pageSize)) {
+            onPageChange(event, pagination.page);
+          }
+          console.log('ArrowRight');
+          console.log('pagination.page', pagination.page);
+          break;
+        case 'ArrowLeft':
+          if (pagination.page > 1) {
+            onPageChange(event, pagination.page - 2);
+          }
+          console.log('ArrowLeft');
+          console.log('pagination.page', pagination.page);
+          break;
+        default:
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [pagination.page, pagination.total, pagination.pageSize, onPageChange]);
 
   return (
     <Box ref={containerRef}>
@@ -59,7 +89,7 @@ export default function WordManagerGridView({
               onDifficultyChange={onDifficultyChange}
             />
           ))}
-          </Box>
+        </Box>
         {/* </Stack> */}
       </Collapse>
       <Stack
