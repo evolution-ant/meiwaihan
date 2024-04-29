@@ -27,6 +27,7 @@ const ICONS = {
   image: icon('ic_image'),
   chart: icon('ic_chart'),
   mind: icon('ic_mind'),
+  english: icon('ic_invoice'),
   'post-one': icon('ic_mail'),
   user: icon('ic_user'),
   file: icon('ic_file'),
@@ -90,9 +91,17 @@ export function useNavData() {
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        console.log("user:",user)
+        let role = ""
+        if(user.username==="gaga"){
+            role = "Admin"
+        }else{
+            role = "Public"
+        }
       const accessToken = localStorage.getItem('accessToken');
       setSession(accessToken);
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API}/menus?filters[title][$eq]=Admin&nested&populate=*`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_HOST_API}/menus?filters[title][$eq]=${role}&nested&populate=*`);
       const responseData = response.data.data[0];
       const transformedData = transformData(responseData);
       setData(transformedData);

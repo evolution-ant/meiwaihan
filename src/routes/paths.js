@@ -17,7 +17,7 @@ export const paths = {
   },
   // DASHBOARD
   dashboard: {
-    root: `${ROOTS.DASHBOARD}/idea`,
+    root: `${ROOTS.DASHBOARD}/english`,
     blog: {
       root: `${ROOTS.DASHBOARD}/blog`,
       details: (id) => `${ROOTS.DASHBOARD}/blog/${id}`,
