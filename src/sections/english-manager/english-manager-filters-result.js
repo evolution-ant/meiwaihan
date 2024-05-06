@@ -20,7 +20,7 @@ export default function WordManagerFiltersResult({
   ...other
 }) {
   return (
-    <Stack spacing={1.5} {...other}>
+    <Stack spacing={0} {...other}>
       {/* <Box sx={{ typography: 'body2' }}>
         <strong>{results}</strong>
         <Box component="span" sx={{ color: 'text.secondary', ml: 0.25 }}>
