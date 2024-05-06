@@ -45,13 +45,13 @@ export default function JwtLoginView() {
   });
 
   const defaultValues = {
-    email: '812397431@qq.com',
-    password: 'password123',
+    email: 'youzi@gmail.com', // Replace with the desired default email
+    password: '666666', // Replace with the desired default password
   };
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    // defaultValues,
+    defaultValues, // Set the default values here
   });
 
   const {
