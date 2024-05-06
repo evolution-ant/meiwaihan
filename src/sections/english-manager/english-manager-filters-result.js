@@ -21,12 +21,12 @@ export default function WordManagerFiltersResult({
 }) {
   return (
     <Stack spacing={1.5} {...other}>
-      <Box sx={{ typography: 'body2' }}>
+      {/* <Box sx={{ typography: 'body2' }}>
         <strong>{results}</strong>
         <Box component="span" sx={{ color: 'text.secondary', ml: 0.25 }}>
           results found
         </Box>
-      </Box>
+      </Box> */}
 
       <Stack flexGrow={1} spacing={1} direction="row" flexWrap="wrap" alignItems="center">
         {!!filters.language && (
@@ -61,7 +61,7 @@ export default function WordManagerFiltersResult({
           </Block>
         )}
 
-        {canReset && (
+        {/* {canReset && (
           <Button
             color="error"
             onClick={onResetFilters}
@@ -69,7 +69,7 @@ export default function WordManagerFiltersResult({
           >
             Clear
           </Button>
-        )}
+        )} */}
       </Stack>
     </Stack>
   );
