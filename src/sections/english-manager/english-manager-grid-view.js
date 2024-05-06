@@ -104,7 +104,7 @@ export default function WordManagerGridView({
           rowsPerPage={pagination.pageSize}
           onPageChange={onPageChange}
           onRowsPerPageChange={onRowsPerPageChange}
-          rowsPerPageOptions={[5, 10, 25, 50, 100, 10000]}
+          rowsPerPageOptions={[1, 5, 10, 25, 50, 100, 10000]}
           sx={{
             width: '100%',
             [`& .${tablePaginationClasses.toolbar}`]: {

@@ -8,6 +8,9 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
@@ -22,6 +25,7 @@ import WordManagerFilters from '../english-manager-filters';
 import WordManagerGridView from '../english-manager-grid-view';
 import WordManagerFiltersResult from '../english-manager-filters-result';
 import WordManagerNewDialog from '../english-manager-new-dialog';
+
 
 // ----------------------------------------------------------------------
 
@@ -54,7 +58,7 @@ export default function WordManagerView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const [sortBy, setSortBy] = useState('updatedAt:desc');
+  const [sortBy, setSortBy] = useState('updatedAt:asc');
 
   const allTypes = ['','kid'];
 
@@ -170,7 +174,24 @@ export default function WordManagerView() {
     [getWords, sortBy, filters, updateWordStatus]
   );
 
+
+  const handlePreviousPage = useCallback(() => {
+    setWordPagination((prevState) => ({
+      ...prevState,
+      page: Math.max(prevState.page - 1, 1), // Ensure page does not go below 1
+    }));
+  }, [setWordPagination]);
+
+  const handleNextPage = useCallback(() => {
+    setWordPagination((prevState) => ({
+      ...prevState,
+      page: prevState.page + 1, // Increment the page
+    }));
+  }, [setWordPagination]);
+
+  
   const renderFilters = (
+    <>
     <Stack
       sx={{
         width: '100%',
@@ -191,6 +212,25 @@ export default function WordManagerView() {
         />
       </Box>
     </Stack>
+    <Stack direction="row" justifyContent="center" spacing={4} my={1}>
+    <Button
+      variant="contained"
+      startIcon={<ArrowBackIcon />}
+      onClick={handlePreviousPage}
+      disabled={wordPagination.page === 1} // Disable if on the first page
+    >
+      Previous
+    </Button>
+    <Button
+      variant="contained"
+      endIcon={<ArrowForwardIcon />}
+      onClick={handleNextPage}
+      // You can add additional logic to disable this if on the last page
+    >
+      Next
+    </Button>
+  </Stack>
+  </>
   );
 
   const renderResults = (
@@ -207,6 +247,8 @@ export default function WordManagerView() {
       results={wordsCount}
     />
   );
+
+
 
   return (
     <>
