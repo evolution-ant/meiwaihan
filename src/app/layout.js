@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import 'src/global.css';
 
 // scroll bar
 import 'simplebar-react/dist/simplebar.min.css';

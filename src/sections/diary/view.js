@@ -2,6 +2,7 @@
 
 // @mui
 import Timeline from '@mui/lab/Timeline';
+import Box from '@mui/material/Box';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineContent from '@mui/lab/TimelineContent';
@@ -18,9 +19,17 @@ import { useBoolean } from 'src/hooks/use-boolean';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+
 // components
 import Iconify from 'src/components/iconify';
 import { isDateError } from 'src/components/custom-date-range-picker';
+import CarouselBasic3 from './carousel-basic-3';
+import CarouselBasic1 from './carousel-basic-1';
+import CarouselAnimation from './carousel-animation';
 
 //
 import DialyFilters from './diary-filters';
@@ -30,6 +39,24 @@ import NewDiaryDialog from './new-diary-dialog';
 import { useDiary } from './hooks';
 
 // ----------------------------------------------------------------------
+
+const _carouselsExample3 = [
+  {
+    // id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b9',
+    // title: '10 Must-Visit Destinations for Adventure Travelers',
+    coverUrl: 'https://api-dev-minimal-v510.vercel.app/assets/images/cover/cover_9.jpg',
+    // description:
+    //   'Eaque natus adipisci soluta nostrum dolorem. Nesciunt ipsum molestias ut aliquid natus ut omnis qui fugiat. Dolor et rem. Ut neque voluptatem blanditiis quasi ullam deleniti.',
+  },
+  {
+    // id: 'e99f09a7-dd88-49d5-b1c8-1daf80c2d7b10',
+    // title: 'The Benefits of Mindfulness Meditation',
+    coverUrl: 'https://api-dev-minimal-v510.vercel.app/assets/images/cover/cover_10.jpg',
+    // description:
+    //   'Nam et error exercitationem qui voluptate optio. Officia omnis qui accusantium ipsam qui. Quia sequi nulla perspiciatis optio vero omnis maxime omnis ipsum. Perspiciatis consequuntur asperiores veniam dolores.',
+  },
+];
+
 const typeStyles = [
   {
     type: 'family',
@@ -116,7 +143,7 @@ export default function TimelineView() {
         happenedAt,
         color: type.color,
         icon: type.icon,
-        item
+        item,
       };
     });
     setData(newData);
@@ -219,6 +246,14 @@ export default function TimelineView() {
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                   {item.des}
                 </Typography>
+                <Box sx={{ width: '100%', mt: 2, maxWidth: 450, overflow: 'hidden' }}>
+                  {/* <Card> */}
+                  {/* <CardHeader title="Carousel Basic 1" /> */}
+                  {/* <CardContent> */}
+                  <CarouselBasic3 data={item.item.attributes.images.data} />
+                  {/* </CardContent> */}
+                  {/* </Card> */}
+                </Box>
               </Paper>
             </TimelineContent>
           </TimelineItem>

@@ -18,6 +18,14 @@ query diaries($filters:DiaryFiltersInput!){
           description
           type
           happenedAt
+          images{
+            data{
+                attributes{
+                    hash
+                    ext
+                }
+            }
+          }
         }
       }
     }
