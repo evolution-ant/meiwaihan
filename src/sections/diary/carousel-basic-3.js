@@ -51,7 +51,7 @@ function CarouselItem({ item }) {
     console.log(item)
   const { title } = item;
   const coverUrl = `${process.env.NEXT_PUBLIC_STRAPI}/uploads/${item?.attributes.hash}${item?.attributes.ext}`;
-  return <Image alt={title} src={coverUrl} ratio="1/1" />;
+  return <Image alt={title} src={coverUrl} ratio="6/4" />;
 }
 
 CarouselItem.propTypes = {
